@@ -1,5 +1,5 @@
 {
   "appHost": {
-    "path": "AspireAngularDeploy/apphost.cs"
+    "path": "AspireAngularDeploy.AppHost/AspireAngularDeploy.AppHost.csproj"
   }
 }

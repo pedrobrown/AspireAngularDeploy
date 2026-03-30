@@ -1,2 +1,4 @@
 <Solution>
+  <Project Path="AspireAngularDeploy.AppHost/AspireAngularDeploy.AppHost.csproj" />
+  <Project Path="AspireAngularDeploy.Server/AspireAngularDeploy.Server.csproj" />
 </Solution>
