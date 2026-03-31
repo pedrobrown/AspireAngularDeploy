@@ -5,13 +5,18 @@ var cache = builder.AddRedis("cache");
 var server = builder.AddProject<Projects.AspireAngularDeploy_Server>("server")
     .WithReference(cache).WaitFor(cache)
     .WithHttpHealthCheck("/health")
-    .WithExternalHttpEndpoints();
+    .WithExternalHttpEndpoints()
+    ;
 
 var webfrontend = builder.AddJavaScriptApp("webfrontend", "../frontend", "start")
     .WithReference(server).WaitFor(server)
     .WithHttpEndpoint(env: "PORT", port: 4200, isProxied: false)
-    .WithExternalHttpEndpoints();
+    .WithExternalHttpEndpoints()
+    .WithBuildScript("build")
+    ;
 
 server.PublishWithContainerFiles(webfrontend, "wwwroot");
+
+var docker = builder.AddDockerComposeEnvironment("docker");
 
 builder.Build().Run();
