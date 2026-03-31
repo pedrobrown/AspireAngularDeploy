@@ -1,0 +1,114 @@
+<div class="app-container">
+  <header class="app-header">
+    <a
+      href="https://aspire.dev"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Visit Aspire website (opens in new tab)"
+      class="logo-link"
+    >
+      <img src="/assets/Aspire.png" class="logo" alt="Aspire logo" />
+    </a>
+    <h1 class="app-title">Aspire Starter</h1>
+    <p class="app-subtitle">Modern distributed application development</p>
+  </header>
+
+  <main class="main-content">
+    <section class="weather-section" aria-labelledby="weather-heading">
+      <div class="card">
+        <div class="section-header">
+          <h2 id="weather-heading" class="section-title">Weather Forecast</h2>
+          <div class="header-actions">
+            <fieldset class="toggle-switch" aria-label="Temperature unit selection">
+              <legend class="visually-hidden">Temperature unit</legend>
+              <button
+                type="button"
+                class="toggle-option"
+                [class.active]="!useCelsius"
+                [attr.aria-pressed]="!useCelsius"
+                (click)="toggleUnit(false)"
+              >
+                <span aria-hidden="true">°F</span>
+                <span class="visually-hidden">Fahrenheit</span>
+              </button>
+              <button
+                type="button"
+                class="toggle-option"
+                [class.active]="useCelsius"
+                [attr.aria-pressed]="useCelsius"
+                (click)="toggleUnit(true)"
+              >
+                <span aria-hidden="true">°C</span>
+                <span class="visually-hidden">Celsius</span>
+              </button>
+            </fieldset>
+            <button
+              type="button"
+              class="refresh-button"
+              (click)="loadWeatherForecast()"
+              [disabled]="loading"
+              [attr.aria-label]="loading ? 'Loading weather forecast' : 'Refresh weather forecast'"
+            >
+              <svg
+                class="refresh-icon"
+                [class.spinning]="loading"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2" />
+              </svg>
+              <span>{{ loading ? 'Loading...' : 'Refresh' }}</span>
+            </button>
+          </div>
+        </div>
+
+        <div *ngIf="error" class="error-message" role="alert" aria-live="polite">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" y1="8" x2="12" y2="12" />
+            <line x1="12" y1="16" x2="12.01" y2="16" />
+          </svg>
+          <span>{{ error }}</span>
+        </div>
+
+        <div *ngIf="loading && weatherData.length === 0" class="loading-skeleton" role="status" aria-live="polite" aria-label="Loading weather data">
+          <div *ngFor="let i of [0, 1, 2, 3, 4]" class="skeleton-row" aria-hidden="true"></div>
+          <span class="visually-hidden">Loading weather forecast data...</span>
+        </div>
+
+        <div *ngIf="weatherData.length > 0" class="weather-grid">
+          <article *ngFor="let forecast of weatherData; index as i" class="weather-card" [attr.aria-label]="'Weather for ' + formatDate(forecast.date)">
+            <h3 class="weather-date">
+              <time [attr.dateTime]="forecast.date">{{ formatDate(forecast.date) }}</time>
+            </h3>
+            <p class="weather-summary">{{ forecast.summary }}</p>
+            <div class="weather-temps" [attr.aria-label]="'Temperature: ' + toTemp(forecast) + ' degrees ' + (useCelsius ? 'Celsius' : 'Fahrenheit')">
+              <div class="temp-group">
+                <span class="temp-value" aria-hidden="true">{{ toTemp(forecast) }}°</span>
+                <span class="temp-unit" aria-hidden="true">{{ useCelsius ? 'Celsius' : 'Fahrenheit' }}</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <nav aria-label="Footer navigation">
+      <a href="https://aspire.dev" target="_blank" rel="noopener noreferrer">
+        Learn more about Aspire<span class="visually-hidden"> (opens in new tab)</span>
+      </a>
+      <a href="https://github.com/dotnet/aspire" target="_blank" rel="noopener noreferrer" class="github-link" aria-label="View Aspire on GitHub (opens in new tab)">
+        <img src="/assets/github.svg" alt="" width="24" height="24" aria-hidden="true" />
+        <span class="visually-hidden">GitHub</span>
+      </a>
+    </nav>
+  </footer>
+</div>
